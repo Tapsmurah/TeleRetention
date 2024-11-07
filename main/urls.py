@@ -16,8 +16,7 @@ urlpatterns = [
     path('register', views.register, name='register'),
     path('login', views.login, name='login'),
     path('logout', views.logout, name='logout'),
-    path('predict-and-recommend/', views.predict_and_recommend_view, name='predict-and-recommend'),
-    
+    path('predict-and-recommend/', views.predict_and_recommend_view, name='predict-and-recommend'),  
     
 ]
 
