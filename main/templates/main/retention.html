@@ -1,0 +1,362 @@
+{% extends "main/index.html" %}
+{% block title%}Retention Prediction{% endblock %}
+{% block title1%}Retention Prediction{% endblock%}
+{% load static %}
+
+   
+    <!-- Bootstrap CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- Bootstrap CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <!-- owl.carousel CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.transitions.css' %}">
+    <!-- animate CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <!-- normalize CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+    <!-- meanmenu icon CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/meanmenu.min.css' %}">
+    <!-- main CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <!-- educate icon CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/educate-custon-icon.css' %}">
+    <!-- morrisjs CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/morrisjs/morris.css' %}">
+    <!-- mCustomScrollbar CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/scrollbar/jquery.mCustomScrollbar.min.css' %}">
+    <!-- metisMenu CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/metisMenu/metisMenu.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/metisMenu/metisMenu-vertical.css' %}">
+    <!-- calendar CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/calendar/fullcalendar.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/calendar/fullcalendar.print.min.css' %}">
+    <!-- modals CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/modals.css' %}">
+    <!-- forms CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/form/all-type-forms.css' %}">
+    <!-- style CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <!-- responsive CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <!-- modernizr JS
+		============================================ -->
+    <script src="{% static 'js/vendor/modernizr-2.8.3.min.js' %}"></script>
+</head>
+
+{% block body %}
+    
+
+    <div class="single-pro-review-area mt-t-30 mg-b-15">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="product-payment-inner-st">
+                <div class="row">
+                    <form method="post" action="{% url 'predict-and-recommend' %}">
+                      {% csrf_token %}
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div class="review-content-section">
+                              <div class="sparkline8-hd">
+                                  <div class="main-sparkline8-hd" style="display: flex; justify-content: center; align-items: center;">
+                                      <h1>Retention Prediction and Recommendations</h1>
+                                  </div>
+                                  <hr>
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="customer_id">Customer ID:</label>
+                                      <input class="form-control" type="number" id="customer_id" name="customer_id" placeholder="Enter Cust ID eg 0002-ORFBO" required><br>
+                                  </div>  
+
+                                  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                                    <label for="gender">Gender:</label>
+                                    <select class="form-control" id="gender" name="gender" required>
+                                        <option value="" disabled selected>Select Gender</option>
+                                        <option >Male</option>
+                                        <option >Female</option>
+                                    </select><br>
+                                  </div>
+
+                                  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                                      <label for="age">Age:</label>
+                                      <input class="form-control" type="number" id="age" name="age" placeholder="Enter Customer Age" required><br>
+                                  </div> 
+
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">   
+                                      <label for="senior_citizen">Senior Citizen:</label>
+                                      <select class="form-control" id="senior_citizen" name="senior_citizen" required>
+                                          <option value="" disabled selected>Select if Senior Citizen</option>
+                                          <option value="1">Yes</option>
+                                          <option value="0">No</option>
+                                      </select><br>
+                                  </div>
+
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">   
+                                      <label for="location">Location:</label>
+                                      <select class="form-control" id="location" name="location" required>
+                                          <option disabled selected>Select Location</option>
+                                          <option >Harare</option>
+                                          <option >Bulawayo</option>
+                                          <option >Manicaland</option>
+                                          <option >Mashonaland Central</option>
+                                          <option >Mashonaland East</option>
+                                          <option >Mashonaland West</option>
+                                          <option >Masvingo</option>
+                                          <option >Matabeleland North</option>
+                                          <option >Matabeleland South</option>
+                                          <option >Midlands</option>
+                                      </select><br>
+                                  </div>   
+
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="area_code">Recharge Method:</label>
+                                      <select class="form-control" id="area_code" name="area_code" required>
+                                          <option value="" disabled selected>Recharge Method</option>
+                                          <option value="408">Scratch Cards</option>
+                                          <option value="415">Auto-Renewal</option>
+                                          <option value="510">Bank Transfers</option>
+                                          <option value="408">Online Recharge</option>
+                                          <option value="415">Mobile Money</option>
+                                          <option value="510">Agent Payments</option>
+                                      </select><br>
+                                  </div>
+                  
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="tenure">Tenure (Months):</label>
+                                      <input class="form-control" type="number" id="tenure" name="tenure" placeholder="Enter Tenure in Months" required><br>
+                                  </div>
+
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> 
+                                      <label for="international_plan">International Plan:</label>
+                                      <select class="form-control" id="international_plan" name="international_plan" required>
+                                          <option value="" disabled selected>Select Plan</option>
+                                          <option value="1">Yes</option>
+                                          <option value="0">No</option>
+                                      </select><br>
+                                  </div>
+                  
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="voice_mail_plan">Voice Mail Plan:</label>
+                                      <select class="form-control" id="voice_mail_plan" name="voice_mail_plan" required>
+                                          <option value="" disabled selected>Select Plan</option>
+                                          <option value="1">Yes</option>
+                                          <option value="0">No</option>
+                                      </select><br>
+                                  </div>
+                  
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="number_vmail_messages">Voicemail Messages:</label>
+                                      <input class="form-control" type="number" id="number_vmail_messages" name="number_vmail_messages" placeholder="Enter number of voicemail messages" required><br>
+                                  </div>
+
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="customer_service_calls">Cust Service Calls:</label>
+                                      <input class="form-control" type="number" id="customer_service_calls" name="customer_service_calls" placeholder="Enter number of service calls" required><br>
+                                  </div>
+                  
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="total_day_minutes">Total Day Minutes:</label>
+                                      <input class="form-control" type="number" id="total_day_minutes" name="total_day_minutes" placeholder="Enter Total Day Minutes" required><br>
+                                  </div>
+
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="total_day_calls">Total Day Calls:</label>
+                                      <input class="form-control" type="number" id="total_day_calls" name="total_day_calls" placeholder="Enter Total Day Calls" required><br>
+                                  </div>
+
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="total_day_charge">Total Day Charge:</label>
+                                      <input class="form-control" type="number" id="total_day_charge" name="total_day_charge" placeholder="Enter Total Day Charge" step="0.01" required><br>
+                                  </div>  
+
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="total_eve_minutes">Total Evening Minutes:</label>
+                                      <input class="form-control" type="number" id="total_eve_minutes" name="total_eve_minutes" placeholder="Enter Total Evening Minutes" required><br>
+                                  </div>
+
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="total_eve_calls">Total Evening Calls:</label>
+                                      <input class="form-control" type="number" id="total_eve_calls" name="total_eve_calls" placeholder="Enter Total Evening Calls" required><br>
+                                  </div>
+                  
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="total_eve_charge">Total Evening Charge:</label>
+                                      <input class="form-control" type="number" id="total_eve_charge" name="total_eve_charge" placeholder="Enter Total Evening Charge" step="0.01" required><br>
+                                  </div>
+
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="total_night_minutes">Total Night Minutes:</label>
+                                      <input class="form-control" type="number" id="total_night_minutes" name="total_night_minutes" placeholder="Enter Total Night Minutes" required><br>
+                                  </div>
+
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="total_night_calls">Total Night Calls:</label>
+                                      <input class="form-control" type="number" id="total_night_calls" name="total_night_calls" placeholder="Enter Total Night Calls" required><br>
+                                  </div>
+
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="total_night_charge">Total Night Charge:</label>
+                                      <input class="form-control" type="number" id="total_night_charge" name="total_night_charge" placeholder="Enter Total Night Charge" step="0.01" required><br>
+                                  </div>
+
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="total_intl_minutes">Total Inter Minutes:</label>
+                                      <input class="form-control" type="number" id="total_intl_minutes" name="total_intl_minutes" placeholder="Enter Total International Minutes" required><br>
+                                  </div>
+                  
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="total_intl_calls">Total Inter Calls:</label>
+                                      <input class="form-control" type="number" id="total_intl_calls" name="total_intl_calls" placeholder="Enter Total International Calls" required><br>
+                                  </div>
+
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="total_intl_charge">Total Inter Charge:</label>
+                                      <input class="form-control" type="number" id="total_intl_charge" name="total_intl_charge" placeholder="Enter Total International Charge" step="0.01" required><br>
+                                  </div>
+
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="billing_issues">Billing Issues:</label>
+                                      <input class="form-control" type="number" id="billing_issues" name="billing_issues" placeholder="Enter Number of Billing Issues" required><br>
+                                  </div>
+
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                      <label for="loyalty_program">Loyalty Program:</label>
+                                      <select class="form-control" id="loyalty_program" name="loyalty_program" required>
+                                          <option value="" disabled selected>Select if Customer Has Loyalty Program</option>
+                                          <option value="1">Yes</option>
+                                          <option value="0">No</option>
+                                      </select><br>
+                                  </div>
+                  
+                                  <div class="row">
+                                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                          <div class="form-group-inner">
+                                              <div style="display: flex; justify-content: center; margin-top: 0px;" class="login-btn-inner">
+                                                  <button class="btn btn-sm btn-primary login-submit-cs" type="submit">Predict and Recommend</button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </form>
+                </div>
+            </div>
+          </div>
+
+          
+
+            <!--<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+              <div class="white-box analytics-info-cs mg-b-10 res-mg-b-30 res-mg-t-30 table-mg-t-pro-n tb-sm-res-d-n dk-res-t-d-n">
+                <h3 class="box-title">Total Visit</h3>
+                <ul class="list-inline two-part-sp">
+                    <li>
+                        <div id="sparklinedash"></div>
+                    </li>
+                    <li class="text-right sp-cn-r"><i class="fa fa-level-up" aria-hidden="true"></i> <span class="counter text-success">1500</span></li>
+                </ul>
+            </div>
+            <div class="white-box analytics-info-cs mg-b-10 res-mg-b-30 tb-sm-res-d-n dk-res-t-d-n">
+                <h3 class="box-title">Page Views</h3>
+                <ul class="list-inline two-part-sp">
+                    <li>
+                        <div id="sparklinedash2"></div>
+                    </li>
+                    <li class="text-right graph-two-ctn"><i class="fa fa-level-up" aria-hidden="true"></i> <span class="counter text-purple">3000</span></li>
+                </ul>
+            </div>
+            <div class="white-box analytics-info-cs mg-b-10 res-mg-b-30 tb-sm-res-d-n dk-res-t-d-n">
+                <h3 class="box-title">Unique Visitor</h3>
+                <ul class="list-inline two-part-sp">
+                    <li>
+                        <div id="sparklinedash3"></div>
+                    </li>
+                    <li class="text-right graph-three-ctn"><i class="fa fa-level-up" aria-hidden="true"></i> <span class="counter text-info">5000</span></li>
+                </ul>
+            </div>
+            <div class="white-box analytics-info-cs table-dis-n-pro tb-sm-res-d-n dk-res-t-d-n">
+                <h3 class="box-title">Bounce Rate</h3>
+                <ul class="list-inline two-part-sp">
+                    <li>
+                        <div id="sparklinedash4"></div>
+                    </li>
+                    <li class="text-right graph-four-ctn"><i class="fa fa-level-down" aria-hidden="true"></i> <span class="text-danger"><span class="counter">18</span>%</span>
+                    </li>
+                </ul>
+            </div>-->
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+ {% endblock body %}
+ {% block javascript %}
+    <!-- jquery
+		============================================ -->
+    <script src="{% static 'js/vendor/jquery-1.12.4.min.js' %}"></script>
+    <!-- bootstrap JS
+		============================================ -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- wow JS
+		============================================ -->
+    <script src="{% static 'js/wow.min.js' %}"></script>
+    <!-- price-slider JS
+		============================================ -->
+    <script src="{% static 'js/jquery-price-slider.js' %}"></script>
+    <!-- meanmenu JS
+		============================================ -->
+    <script src="{% static 'js/jquery.meanmenu.js' %}"></script>
+    <!-- owl.carousel JS
+		============================================ -->
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <!-- sticky JS
+		============================================ -->
+    <script src="{% static 'js/jquery.sticky.js' %}"></script>
+    <!-- scrollUp JS
+		============================================ -->
+    <script src="{% static 'js/jquery.scrollUp.min.js' %}"></script>
+    <!-- mCustomScrollbar JS
+		============================================ -->
+    <script src="{% static 'js/scrollbar/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+    <script src="{% static 'js/scrollbar/mCustomScrollbar-active.js' %}"></script>
+    <!-- metisMenu JS
+		============================================ -->
+    <script src="{% static 'js/metisMenu/metisMenu.min.js' %}"></script>
+    <script src="{% static 'js/metisMenu/metisMenu-active.js' %}"></script>
+    <!-- tab JS
+		============================================ -->
+    <script src="{% static 'js/tab.js' %}"></script>
+    <!-- icheck JS
+		============================================ -->
+    <script src="{% static 'js/icheck/icheck.min.js' %}"></script>
+    <script src="{% static 'js/icheck/icheck-active.js' %}"></script>
+    <!-- plugins JS
+		============================================ -->
+    <script src="{% static 'js/plugins.js' %}"></script>
+    <!-- main JS
+		============================================ -->
+    <script src="{% static 'js/main.js' %}"></script>
+    
+    {% endblock javascript %}
+
+</html>

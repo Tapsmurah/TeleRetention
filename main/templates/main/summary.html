@@ -1,0 +1,337 @@
+{% extends "main/index.html" %}
+{% block title%}Summary{% endblock %}
+{% block title1%}Summary{% endblock%}
+
+
+{% block body %}
+   
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    .chart {
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    canvas {
+        width: 100% !important; /* Responsive width */
+        height: auto !important; /* Auto height */
+        max-width: 400px; /* Maximum width */
+        margin: 0 auto;
+        display: block;
+    }
+
+    #legendContainer {
+        margin-left: 20px;
+    }
+
+    .table-container {
+        margin: 2% auto;
+        width: 90%;
+    }
+
+    .pagination {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .charts-row {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap; /* Allows wrapping for smaller screens */
+    }
+
+    @media (max-width: 768px) {
+        .charts-row {
+            flex-direction: column; /* Stack charts on smaller screens */
+        }
+    }
+</style>
+
+<div class="courses-area mg-b-15">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                <div class="white-box">
+                    <div class="row charts-row">
+                        <!-- Bar Chart: Churn Risk by Retention Offer -->
+                        <div class="col-md-4 chart">
+                            <h3>Churn Risk by Retention Offer</h3>
+                            <canvas id="churnRiskOffer"></canvas>
+                        </div>
+
+                        <!-- Pie Chart: Average Churn Risk by Number of Products -->
+                        <div class="col-md-4 chart">
+                            <h3>Average Churn Risk by Number of Products</h3>
+                            <div style="display: flex; align-items: center;">
+                                <canvas id="churnRiskByProducts"></canvas>
+                                <div id="legendContainer"></div>
+                            </div>
+                        </div>
+
+                        <!-- Stacked Bar Chart: Recommended Products and Churn -->
+                        <div class="col-md-4 chart">
+                            <h3>Recommended Products and Churn</h3>
+                            <canvas id="recommendedProducts"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; text-align: left; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background-color: #f2f2f2;">
+                                    <th>Customer ID</th>
+                                    <th>Churn Rate</th>
+                                    <th>Recommended Product</th>
+                                    <th>Contract</th>
+                                    <th>Location</th>
+                                    <th>Tenure(months)</th>
+                                    <th>Payment Method</th>
+                                    <th>Date Predicted</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for prediction in churn_predictions %}
+                                <tr>
+                                    <td>{{ prediction.customer_id }}</td>
+                                    <td>{{ prediction.churn_rate }}</td>
+                                    <td>{{ prediction.recommended_products }}</td>
+                                    <td>{{ prediction.contract }}</td>
+                                    <td>{{ prediction.location }}</td>
+                                    <td>{{ prediction.tenure }}</td>
+                                    <td>{{ prediction.payment_method }}</td>
+                                    <td>{{ prediction.created_at }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="8">No predictions available.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <!-- Pagination Controls -->
+                        <nav aria-label="Page navigation" class="pagination">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item disabled" id="prevPage">
+                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                </li>
+                                <li class="page-item active" id="page1"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item" id="page2"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item" id="page3"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item" id="nextPage">
+                                    <a class="page-link" href="#">Next</a>
+                                    <a href="{% url 'churn-rate-and-recommendations' %}">View full table</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12" style="height: 120px;">
+                <div class="analysis-progrebar res-mg-t-30 mg-ub-10 res-mg-b-30 table-mg-t-pro-n tb-sm-res-d-n dk-res-t-d-n">
+                    <div class="analysis-progrebar-content">
+                        <h5>Usage</h5>
+                        <h2 class="storage-right"><span class="counter">90</span>%</h2>
+                        <div class="progress progress-mini ug-1">
+                            <div style="width: 68%;" class="progress-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12" style="height: 120px;">
+                <div class="analysis-progrebar reso-mg-b-30 res-mg-b-30 mg-ub-10 tb-sm-res-d-n dk-res-t-d-n">
+                    <div class="analysis-progrebar-content">
+                        <h5>Memory</h5>
+                        <h2 class="storage-right"><span class="counter">70</span>%</h2>
+                        <div class="progress progress-mini ug-2">
+                            <div style="width: 78%;" class="progress-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12" style="height: 120px;">
+                <div class="analysis-progrebar reso-mg-b-30 res-mg-b-30 res-mg-t-30 mg-ub-10 tb-sm-res-d-n dk-res-t-d-n">
+                    <div class="analysis-progrebar-content">
+                        <h5>Data</h5>
+                        <h2 class="storage-right"><span class="counter">50</span>%</h2>
+                        <div class="progress progress-mini ug-3">
+                            <div style="width: 38%;" class="progress-bar progress-bar-danger"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12" style="height: 120px;">
+                <div class="analysis-progrebar res-mg-t-30 table-dis-n-pro tb-sm-res-d-n dk-res-t-d-n">
+                    <div class="analysis-progrebar-content">
+                        <h5>Space</h5>
+                        <h2 class="storage-right"><span class="counter">40</span>%</h2>
+                        <div class="progress progress-mini ug-4">
+                            <div style="width: 28%;" class="progress-bar progress-bar-danger"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Churn Risk by Retention Offer (Bar Chart)
+var ctxOffer = document.getElementById('churnRiskOffer').getContext('2d');
+var churnRiskOffer = new Chart(ctxOffer, {
+    type: 'bar',
+    data: {
+        labels: ['No Offer', '5% Off', '10% Off', '20% Off'],
+        datasets: [
+            {
+                label: 'At Risk of Churn',
+                data: [1100, 550, 230, 120],
+                backgroundColor: 'red',
+            },
+            {
+                label: 'Not at Risk',
+                data: [3200, 2250, 2270, 1280],
+                backgroundColor: '#00008B',
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'top' },
+        },
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+
+// Average Churn Risk Score by Number of Products (Donut Chart)
+var ctxProducts = document.getElementById('churnRiskByProducts').getContext('2d');
+var churnRiskByProducts = new Chart(ctxProducts, {
+    type: 'doughnut',
+    data: {
+        labels: ['Device', 'Free Data', 'Voice Minutes', 'SMS', 'Other'],
+        datasets: [{
+            data: [5200, 7300, 4100, 2000, 1000],
+            backgroundColor: [
+                '#B0C4DE',
+                '#4682B4',
+                '#5F9EA0',
+                '#0077BE',
+                '#00008B'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            tooltip: { enabled: true },
+            legend: { display: false }
+        },
+        cutout: '50%',
+    }
+});
+
+// Custom Legend Creation
+var legendContainer = document.getElementById('legendContainer');
+churnRiskByProducts.data.labels.forEach((label, index) => {
+    var legendItem = document.createElement('div');
+    legendItem.style.display = 'flex';
+    legendItem.style.alignItems = 'center';
+    legendItem.style.marginBottom = '5px';
+    
+    var colorBox = document.createElement('div');
+    colorBox.style.backgroundColor = churnRiskByProducts.data.datasets[0].backgroundColor[index];
+    colorBox.style.width = '20px';
+    colorBox.style.height = '20px';
+    colorBox.style.marginRight = '10px';
+    
+    var text = document.createElement('span');
+    text.innerText = label;
+    
+    legendItem.appendChild(colorBox);
+    legendItem.appendChild(text);
+    legendContainer.appendChild(legendItem);
+});
+
+// Recommended Products and Churn (Horizontal Stacked Bar Chart)
+var ctxRecommended = document.getElementById('recommendedProducts').getContext('2d');
+var recommendedProducts = new Chart(ctxRecommended, {
+    type: 'bar',
+    data: {
+        labels: ['Data Bundle', 'New Device', 'Voice Minutes', 'Free SMS'],
+        datasets: [
+            {
+                label: 'Churned',
+                data: [20, 550, 100, 80],
+                backgroundColor: 'red',
+            },
+            {
+                label: 'Not Churned',
+                data: [880, 2000, 1070, 1120],
+                backgroundColor: '#00008B',
+            }
+        ]
+    },
+    options: {
+        indexAxis: 'y',
+        responsive: true,
+        plugins: {
+            legend: { position: 'top' }
+        },
+        scales: {
+            x: { beginAtZero: true }
+        }
+    }
+});
+
+// Pagination logic
+let currentPage = 1;
+const rowsPerPage = 3;
+const totalRows = document.querySelectorAll("#customerData tr").length;
+
+function displayPage(page) {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    
+    const rows = Array.from(document.querySelectorAll("#customerData tr"));
+    rows.forEach((row, index) => {
+        row.style.display = index >= start && index < end ? "" : "none";
+    });
+
+    document.querySelectorAll(".page-item").forEach(item => item.classList.remove("active"));
+    document.getElementById(`page${page}`).classList.add("active");
+
+    document.getElementById('prevPage').classList.toggle("disabled", page === 1);
+    document.getElementById('nextPage').classList.toggle("disabled", page * rowsPerPage >= totalRows);
+}
+
+document.getElementById('prevPage').addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--;
+        displayPage(currentPage);
+    }
+});
+
+document.getElementById('nextPage').addEventListener('click', () => {
+    if (currentPage * rowsPerPage < totalRows) {
+        currentPage++;
+        displayPage(currentPage);
+    }
+});
+
+document.getElementById('page1').addEventListener('click', () => { currentPage = 1; displayPage(1); });
+document.getElementById('page2').addEventListener('click', () => { currentPage = 2; displayPage(2); });
+document.getElementById('page3').addEventListener('click', () => { currentPage = 3; displayPage(3); });
+
+// Initial display
+displayPage(1);
+</script>
+{% endblock body %}

@@ -1,0 +1,196 @@
+{% extends "main/index.html" %}
+{% block title%}Churn Reasons{% endblock %}
+{% block title1%}Churn Reasons{% endblock%}
+{% load static %}
+
+{% block body %}
+
+<!-- B0DY -->
+ <style>
+    .analytics-sparkle-line {
+    background-color: #006df0; /* Change this hex value to your desired color */
+    border-radius: 8px; /* Optional: Add rounded corners */
+    padding: 20px; /* Optional: Add some padding */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.analytics-sparkle-line:hover {
+    background-color: #cce5ff; /* Slightly darker shade on hover */
+}
+ </style>
+<div class="analytics-sparkle-area">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <div class="analytics-sparkle-line reso-mg-b-30">
+                    <div class="analytics-content">
+                        <h5>Risky Customers</h5>
+                        <h2 id="riskCustomers">--</h2>
+                    </div>
+                </div>
+            </div> 
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <div class="analytics-sparkle-line reso-mg-b-30">
+                    <div class="analytics-content">
+                        <h5>Average Risk Score</h5>
+                        <h2 id="avgRiskScore">--</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <div class="analytics-sparkle-line reso-mg-b-30 table-mg-t-pro dk-res-t-pro-30">
+                    <div class="analytics-content">
+                        <h5>Risky Customer Charges</h5>
+                        <h2>$<span class="counter" id="totalRiskCharges">--</span></h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <div class="analytics-sparkle-line table-mg-t-pro dk-res-t-pro-30">
+                    <div class="analytics-content">
+                        <h5>Total Charges</h5>
+                        <h2>$<span class="counter" id="totalCharges">3500</span></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<div class="static-table-area"></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="sparkline8-list">
+                    <div class="sparkline8-hd">
+                        <div class="main-sparkline8-hd">
+                            <h1 class = "highlight">Risk Groups</h1>
+                        </div>
+                    </div>
+                    <div class="sparkline8-graph">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <canvas id="churnRiskChart" width="400" height="200"></canvas>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="sparkline8-list">
+                    <div class="sparkline8-hd">
+                        <div class="main-sparkline8-hd">
+                            <h1 class = "highlight">Total Charges by Risk Groups</h1>
+                        </div>
+                    </div>
+                    <div class="sparkline8-graph">
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <canvas id="totalChargesChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Data for the first horizontal bar chart (Churn Prediction by Risk Group)
+    const churnRiskData = {
+        labels: ['Non-Risky', 'Low Risk', 'Risk', 'High Risk'],
+        datasets: [{
+            label: 'Number of Customers',
+            data: [3459, 1547, 1000, 669],
+            backgroundColor: ['darkblue', 'blue', 'lightcoral', 'red'],
+        }]
+    };
+
+    // Configuration for the Churn Risk Chart
+    const churnRiskConfig = {
+        type: 'bar',
+        data: churnRiskData,
+        options: {
+            indexAxis: 'y',  // Horizontal bar chart
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            },
+            onClick: function(evt, item) {
+                if (item.length > 0) {
+                    let index = item[0].index;
+                    showRiskGroupInfo(index);
+                }
+            }
+        }
+    };
+
+    // Render the Churn Risk Chart
+    const churnRiskChart = new Chart(
+        document.getElementById('churnRiskChart'),
+        churnRiskConfig
+    );
+
+    // Data for the second vertical bar chart (Total Charges by Risk Group)
+    const totalChargesData = {
+        labels: ['Non-Risky', 'Low Risk', 'Risk', 'High Risk'],
+        datasets: [{
+            label: 'Total Charges',
+            data: [150000, 100000, 80000, 50000],
+            backgroundColor: ['darkblue', 'blue', 'lightcoral', 'red'],
+        }]
+    };
+
+    // Configuration for the Total Charges Chart
+    const totalChargesConfig = {
+        type: 'bar',
+        data: totalChargesData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            onClick: function(evt, item) {
+                if (item.length > 0) {
+                    let index = item[0].index;
+                    showRiskGroupInfo(index);
+                }
+            }
+        }
+    };
+
+    // Render the Total Charges Chart
+    const totalChargesChart = new Chart(
+        document.getElementById('totalChargesChart'),
+        totalChargesConfig
+    );
+
+    // Function to display information for clicked risk group
+    function showRiskGroupInfo(index) {
+        const riskGroups = ['Non-Risky', 'Low Risk', 'Risk', 'High Risk'];
+        const customers = [3459, 1547, 1000, 669];
+        const avgRiskScores = [10, 25, 50, 75]; // Sample average risk scores for demonstration
+        const charges = [150000, 100000, 80000, 50000];
+        const totalRiskCustomers = customers.reduce((a, b) => a + b, 0);
+
+        // Update info boxes with the relevant data
+        document.getElementById('riskCustomers').textContent = customers[index];
+        document.getElementById('avgRiskScore').textContent = avgRiskScores[index] + '%';
+        document.getElementById('totalRiskCharges').textContent = charges[index];
+        document.getElementById('totalCharges').textContent = charges.reduce((a, b) => a + b, 0);
+    }
+
+    // Initialize default values on page load
+    showRiskGroupInfo(0);  // Default to Non-Risky group on page load
+</script>
+
+
+{% endblock body %}

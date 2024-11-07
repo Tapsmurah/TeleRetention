@@ -1,0 +1,68 @@
+{% extends "main/index.html" %}
+{% block title%}Results{% endblock %}
+{% block title1%}Results{% endblock%}
+{% load static %}
+
+{% block body%}
+<div class="single-pro-review-area mt-t-30 mg-b-15">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="product-payment-inner-st">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="review-content-section">
+                                <div class="sparkline8-hd">
+                                    
+                                    <h2 class="text-center">Prediction and Recommendation Results</h2>
+                                    
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Customer ID</strong></td>
+                                                <td><strong>Age</strong></td>
+                                                <td><strong>Senior Citizen</strong></td>
+                                                <td><strong>Gender</strong></td>
+                                                <td><strong>Location</strong></td>
+                                                <td><strong>Tenure</strong></td>
+                                                <td><strong>Total Charges</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ customer_id }}</td>
+                                                <td>{{ age }} years</td>
+                                                <td>{{ senior_citizen }}</td>
+                                                <td>{{ gender }}</td>
+                                                <td>{{ location }}</td>
+                                                <td>{{ tenure }} months</td>
+                                                <td>
+                                                    ${{ total_day_charge|add:total_night_charge|add:total_eve_charge|add:total_intl_charge }}
+                                                    <small class="text-muted">
+                                                        (Day: ${{ total_day_charge }} + Night: ${{ total_night_charge }} + 
+                                                        Eve: ${{ total_eve_charge }} + Int'l: ${{ total_intl_charge }})
+                                                    </small>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <p >{{ output2 |safe }} &rightarrow; {{ output1 |safe }}</p>
+
+                                    <p>Recommended Products:</p>
+                                    <ul>
+                                        {% for product in recommendations %}
+                                        <li>{{ product }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    <hr>
+
+                                    <a href="{% url 'predict-and-recommend' %}">Go Back</a>
+                                </div>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>   
+    </div>
+</div>
+{% endblock body%}

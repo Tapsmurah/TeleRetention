@@ -1,0 +1,79 @@
+{% extends "main/index.html" %}
+{% block title%}About{% endblock %}
+{% block title1%}About{% endblock%}
+
+
+{% block body %}
+<style>
+    .container {
+    max-width: 800px;
+    margin: 0 auto; /* Centers the container */
+    text-align: center; /* Centers text inside the container */
+}
+
+
+h1 {
+    color: #333;
+}
+
+h2 {
+    color: #007bff;
+    margin-top: 20px;
+}
+
+p {
+    color: #555;
+    line-height: 1.6;
+}
+
+
+
+</style>
+<div class="container">
+    <section>
+        <h2>Welcome to TeleRetention</h2>
+        <p>
+            The Customer Retention Prediction and Product Recommendation System, a comprehensive machine learning-based solution designed specifically for telecom companies to help reduce customer churn and improve customer satisfaction through personalized product recommendations.
+        </p>
+    </section>
+    
+    <section>
+        <h2>Our Mission</h2>
+        <p>
+            Our system aims to provide telecom providers with an advanced tool that predicts when customers are likely to leave (churn) and recommends tailored products or services to keep them engaged. By leveraging the power of data analytics and machine learning, the system empowers businesses to make informed decisions that can enhance customer retention rates and boost overall business performance.
+        </p>
+    </section>
+
+    <section>
+        <h2>Key Features</h2>
+        <ul>
+            <li><strong>Customer Churn Prediction</strong></li>
+            <li> Using machine learning models, the system identifies customers at risk of leaving by analyzing patterns in their behavior, such as usage data, billing information, and service preferences. Our XGBoost model ensures high accuracy in predicting churn, allowing telecom companies to proactively address customer needs.</li>
+
+            <li><strong>Product Recommendation Engine</li>
+            <li></strong> Once a customer is flagged as at risk, the system uses collaborative filtering KNN algorithms to recommend personalized offers, such as discounted data bundles, voice minutes, or loyalty program benefits, to improve customer retention.</li>
+
+            <li><strong>Data-Driven Insights</strong></li>
+            <li> The system’s advanced data processing and analysis capabilities provide actionable insights into customer behavior, allowing companies to refine their strategies and continuously improve customer engagement.</li>
+
+            <li><strong>Seamless Integration</strong> </li>
+            <li>Our solution easily integrates with existing telecom systems, providing a smooth experience for both administrators and end-users.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Why Choose Us?</h2>
+        <p>
+            With customer churn being a major challenge in the telecom industry, our system addresses this issue head-on by combining predictive analytics with targeted recommendations. This approach not only prevents customer loss but also enhances overall customer satisfaction by offering personalized solutions tailored to individual preferences and needs.
+        </p>
+        <p>
+            Our system is built to be secure, scalable, and reliable, offering telecom companies the ability to stay ahead in a competitive market while ensuring that their customers receive the best service possible.
+        </p>
+    </section>
+
+    <footer>
+        <p>Thank you for choosing Teleretention. We are committed to helping telecom providers deliver top-tier services and maintain strong customer relationships.</p>
+    </footer>
+</div>
+
+{% endblock body %}

@@ -1,0 +1,295 @@
+{% extends "main/index.html" %}
+{% block title%}My Profile{% endblock %}
+{% block title1%}My Profile{% endblock%}
+{% load static %}
+
+ <!-- datapicker CSS
+		============================================ -->
+        <link rel="stylesheet" href="{% static 'css/datapicker/datepicker3.css' %}">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+<style>
+    
+    .profile-image {
+        width: 150px; /* Set a specific width */
+        height: 150px; /* Set a specific height */
+        object-fit: cover; /* Ensures the image covers the area without stretching */
+        border-radius: 50%; /* Optional: Makes the image circular */
+        border: 2px solid #ddd; /* Optional: Adds a border around the image */
+    }
+
+    .image-container {
+    width: 100%; /* Full width of the parent container */
+    max-width: 300px; /* Max width for large screens */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+    
+</style>
+<script>
+    const image = document.getElementById('image');
+    const cropper = new Cropper(image, {
+        aspectRatio: 1, // Square aspect ratio
+        viewMode: 1,
+        ready() {
+            // Initialize the cropper
+        },
+    });
+</script>
+{% block body%}
+        <!-- Single pro tab review Start-->
+        <div class="single-pro-review-area mt-t-30 mg-b-15">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <!--<div class="profile-info-inner">
+                            <div class="profile-img">
+                                <img src="{{ user_profile.profileimg.url }}" alt="Profile Image" class="img-thumbnail image-container profile-image">
+                            </div>
+                            <div class="profile-details-hr">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-6">
+                                        <div class="address-hr">
+                                            <p><b>Username</b><br /> {{ user.username }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-6">
+                                        <div class="address-hr tb-sm-res-d-n dps-tb-ntn">
+                                            <p><b>Department</b><br /> {{ user_profile.department }} </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-6">
+                                        <div class="address-hr">
+                                            <p><b>Email ID</b><br /> {{ user.email }} </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-6">
+                                        <div class="address-hr tb-sm-res-d-n dps-tb-ntn">
+                                            <p><b>Phone No.</b><br /> {{ user_profile.mobile_no }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="address-hr">
+                                            <p><b>Address</b><br /> {{ user_profile.address }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <div class="address-hr">
+                                            <a href="#"><i class="fa fa-facebook"></i></a>
+                                            <h3>500</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <div class="address-hr">
+                                            <a href="#"><i class="fa fa-twitter"></i></a>
+                                            <h3>900</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <div class="address-hr">
+                                            <a href="#"><i class="fa fa-google-plus"></i></a>
+                                            <h3>600</h3>
+                                        </div>
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                        <div class="product-payment-inner-st res-mg-t-30 analysis-progrebar-ctn">
+                            <!--<div class="col-lg-4"></div>-->
+                            <ul id="myTabedu1" class="tab-review-design">
+                                <li class="active"><a href="#description">Update Details</a></li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content custom-product-edit st-prf-pro">
+                                <div class="product-tab-list tab-pane fade active in" id="description">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="review-content-section">
+                                                <div class="row">
+                                                    <form action="" method="POST" enctype="multipart/form-data">
+                                                        {% csrf_token %}
+                                                        <div class="col-lg-3">
+                                                            <p><b>Firstname</b></p>
+                                                            <div class="form-group">
+                                                                <input name="firstname" type="text" value="{{ user_profile.firstname }}" class="form-control">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3">
+                                                            <p><b>Lastname</b></p>
+                                                            <div class="form-group">
+                                                                <input type="text" name="lastname" class="form-control"  value="{{ user_profile.lastname }}">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3">
+                                                            <p><b>Address</b></p>
+                                                            <div class="form-group">
+                                                                <input type="text" name="address" class="form-control" value="{{ user_profile.address }}">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3">
+                                                            <p><b>Email</b></p>
+                                                            <div class="form-group">
+                                                                <input type="email" name="email" class="form-control" value="{{ user.email }}">
+                                                            </div>
+                                                        </div>
+                                                        <style>
+                                                            .profile-image-container {
+                                                                position: relative;
+                                                                display: inline-block;
+                                                            }
+                                                        
+                                                            .img-thumbnail {
+                                                                width: 150px; /* Set fixed width */
+                                                                height: 95px; /* Set fixed height */
+                                                                object-fit: cover; /* Maintain aspect ratio and cover the area */
+                                                                border: 2px solid #007bff; /* Optional: add a border */
+                                                            }
+                                                        
+                                                            .form-control-file {
+                                                                margin-top: 10px; /* Add some space above the file input */
+                                                                padding: 5px; /* Adjust padding for better touch targets */
+                                                                font-size: 14px; /* Increase font size for better readability */
+                                                            }
+                                                        
+                                                            .text-center {
+                                                                text-align: center; /* Center text alignment */
+                                                            }
+                                                        </style>
+                                                        <div class="col-lg-3 text-center">
+                                                            <p><b>Profile Image</b></p>
+                                                            <div class="form-group">
+                                                                <!-- Image Display -->
+                                                                <div class="profile-image-container mb-3">
+                                                                    <img src="{{ user_profile.profileimg.url }}" alt="Profile Image" class="img-thumbnail" style="width: 94px; height: 94px;" />
+                                                                </div>
+                                                                <!-- File Input -->
+                                                                <input type="file" name="profileimage" class="form-control-file" id="profileImageInput">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3">
+                                                            <p><b>Gender</b></p>
+                                                            <div class="form-group">
+                                                                    <select class="form-control" id="gender" name="gender">
+                                                                        <option value="" disabled selected>Select Gender</option>
+                                                                        <option value="male" {% if user_profile.gender == 'male' %}selected{% endif %}>Male</option>
+                                                                        <option value="female" {% if user_profile.gender == 'female' %}selected{% endif %}>Female</option>
+                                                                    </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3">
+                                                            <p><b>Department</b></p>
+                                                            <div class="form-group sm-res-mg-15 tbpf-res-mg-15">
+                                                                <input type="text" name="department" class="form-control" value="{{ user_profile.department }}">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3">
+                                                            <p><b>Country</b></p>
+                                                            <div class="form-group sm-res-mg-15 tbpf-res-mg-15">
+                                                                <input type="text" class="form-control" id="country" name="country" value="{{ user_profile.country }}">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3">
+                                                            <p><b>Province</b></p>
+                                                            <div class="form-group sm-res-mg-15 tbpf-res-mg-15">
+                                                                <input type="text" class="form-control" id="province" name="province" value="{{ user_profile.province }}">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3">
+                                                            <p><b>City</b></p>
+                                                            <div class="form-group sm-res-mg-15 tbpf-res-mg-15">
+                                                                <input type="text" class="form-control" id="city" name="city" value="{{ user_profile.city }}">
+                                                            </div>
+                                                        </div>
+                                                            
+                                                        <div class="col-lg-3">
+                                                            <p><b>Mobile Number</b></p>
+                                                            <div class="form-group sm-res-mg-15 tbpf-res-mg-15">
+                                                             <input type="tel" name="mobileno" class="form-control" value="{{ user_profile.mobile_no }}">
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                    
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="payment-adress mg-t-15">
+                                                                    <button type="submit" class="btn btn-primary waves-effect waves-light mg-b-15">Update</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="single-cards-item">
+                                        <div class="single-product-image">
+                                            <a href="#"><img src="{% static 'img/retention_img.jpg' %}" alt="" style="width: 1500px; height: 150px;"></a>
+                                        </div>
+                                        <div class="single-product-text">
+                                            <img src="{{ user_profile.profileimg.url }}" alt="Profile Image">
+                                            <h4><a class="cards-hd-dn" href="#">{{ user_profile.firstname }}</a></h4>
+                                            <h5 class="ctn-cards">Department: {{ user_profile.department }} </h5>
+                                        
+                                            <!--<a class="follow-cards" href="#">Follow</a>-->
+                                            <div class="row">
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-6">
+                                                        <div class="address-hr">
+                                                            <p class="ctn-cards"><b>Email ID</b><br /> {{ user.email }} </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-6">
+                                                        <div class="address-hr tb-sm-res-d-n dps-tb-ntn">
+                                                            <p class="ctn-cards"><b>Phone No.</b><br /> {{ user_profile.mobile_no }}</p>
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="address-hr">
+                                                            <p class="ctn-cards"><b>Address</b><br /> {{ user_profile.address }}</p> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

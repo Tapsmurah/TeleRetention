@@ -1,0 +1,168 @@
+{% extends "main/index.html" %}
+{% block title%}Churn Rate and Recommendations{% endblock %}
+{% block title1%}Churn Rate and Recommendations{% endblock%}
+{% load static %}
+
+
+{% block body %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    table, th, td {
+        border: 1px solid black;
+    }
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    .pagination {
+    margin-top: 20px;
+    text-align: center;
+    }
+
+    .pagination .step-links a, .pagination .current {
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        margin: 0 2px;
+        text-decoration: none;
+    }
+
+    .pagination .current {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+</style>
+
+<div class="single-pro-review-area mt-t-30 mg-b-15">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="product-payment-inner-st">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="review-content-section">
+                                <div class="sparkline8-hd">
+                                    <h2 style="text-align: center;">Churn Rate and Recommendations List</h2>
+                                    
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Customer ID</th>
+                                                <th>Gender</th>
+                                                <th>Age</th>
+                                                <th>Senior Citizen</th>
+                                                <th>Location</th>
+                                                <th>Tenure (months)</th>
+                                                <th>Total Charges</th>
+                                                <th>Date Predicted</th>
+                                                <th>Prediction Output</th>
+                                                <th>Prediction Details</th>
+                                                <th>Recommendations</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for prediction in churn_predictions %}
+                                            <tr>                                           
+                                                <td>{{ prediction.customer_id }}</td>
+                                                <td>{{ prediction.gender }}</td>
+                                                <td>{{ prediction.age }}</td>
+                                                <td>{{ prediction.senior_citizen }}</td>
+                                                <td>{{ prediction.location }}</td>
+                                                <td>{{ prediction.tenure }}</td>
+                                                <td>${{ prediction.total_charges|stringformat:".2f" }}</td>
+                                                <td>{{ prediction.prediction_output }}</td>
+                                                <td>{{ prediction.prediction_details }}</td>
+                                                <td>{{ prediction.recommendations|safe }}</td> 
+                                                <td>{{ prediction.created_at }}</td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="11">No predictions available.</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <!--<a href="{% url 'predict-and-recommend' %}">Go Back</a>-->
+                                    <!-- Pagination Controls -->
+                                    <div class="pagination">
+                                        <span class="step-links">
+                                            {% if page_obj.has_previous %}
+                                                <a href="?page=1">&laquo; first</a>
+                                                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                                            {% endif %}
+
+                                            <span class="current">
+                                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                            </span>
+
+                                            {% if page_obj.has_next %}
+                                                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                                                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>   
+    </div>
+</div>
+{% endblock body %}
+{% block javascript %}
+<script>
+// Pagination settings
+let currentPage = 1;
+const rowsPerPage = 3;
+const totalRows = document.querySelectorAll("#customerData tr").length;
+
+// Function to display the table rows for the current page
+function displayPage(page) {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    
+    const rows = Array.from(document.querySelectorAll("#customerData tr"));
+    rows.forEach((row, index) => {
+        row.style.display = (index >= start && index < end) ? "" : "none";
+    });
+
+    // Update pagination state
+    document.querySelectorAll(".page-item").forEach(item => item.classList.remove("active"));
+    document.getElementById(`page${page}`).classList.add("active");
+
+    // Enable/Disable prev and next buttons
+    document.getElementById('prevPage').classList.toggle("disabled", page === 1);
+    document.getElementById('nextPage').classList.toggle("disabled", page * rowsPerPage >= totalRows);
+}
+
+// Pagination click handlers
+document.getElementById('prevPage').addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--;
+        displayPage(currentPage);
+    }
+});
+
+document.getElementById('nextPage').addEventListener('click', () => {
+    if (currentPage * rowsPerPage < totalRows) {
+        currentPage++;
+        displayPage(currentPage);
+    }
+});
+
+document.getElementById('page1').addEventListener('click', () => { currentPage = 1; displayPage(1); });
+document.getElementById('page2').addEventListener('click', () => { currentPage = 2; displayPage(2); });
+document.getElementById('page3').addEventListener('click', () => { currentPage = 3; displayPage(3); });
+
+// Initial display
+displayPage(1);
+</script>
+{% endblock javascript %}

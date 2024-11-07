@@ -1,0 +1,57 @@
+{% extends 'registration/login.html' %}
+{% block title %}Lock-screen{% endblock %}
+
+{% block body %}
+<div class="error-pagewrap">
+    <div class="error-page-int">
+        <div class="hpanel">
+            <div class="panel-body text-center lock-inner">
+                <i class="fa fa-lock" aria-hidden="true"></i>
+                <br/>
+                <h4>
+                    <span class="text-success">{{ current_time }}</span> <strong>{{ current_date }}</strong>
+                </h4>
+                <p>
+                    <b>{{ user_profile.firstname }}</b>, you are in lock screen. Main app was shut down and you need to enter your password to go back to the app.
+                </p>
+
+                <form action="" id="loginForm" method="POST">
+                    {% csrf_token %}
+                    <div class="messages">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-danger" role="alert">
+                                    <p class="help-block small">{{ message }}</p>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" id="password" required placeholder="Enter your password to unlock" class="form-control">
+                    </div>
+                    <button class="btn btn-primary block full-width" type="submit">Unlock</button>
+                </form>
+            </div>
+        </div>
+        <div class="text-center login-footer">
+            <p>Copyright © 2024. All rights reserved. Designed by <a href="https://Facebook.com/TapiwaMuravu">TrustarkTech</a></p>
+        </div>
+    </div>   
+</div>
+
+<script>
+    let timeout;
+
+    function resetTimer() {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            window.location.href = "{% url 'lockscreen' %}";  
+        }, 60000); // 1 minute
+    }
+
+    // Reset the timer on mouse movement or key press
+    window.onload = resetTimer;
+    document.onmousemove = resetTimer;
+    document.onkeypress = resetTimer;
+</script>
+{% endblock %}
